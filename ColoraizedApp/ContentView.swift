@@ -13,6 +13,8 @@ struct ContentView: View {
     @State private var greenSliderValue = Double.random(in: 0...255)
     @State private var blueSliderValue = Double.random(in: 0...255)
     
+    @State private var applyValue: Double = 255
+    
     @FocusState private var focusedState: Bool
 
     var body: some View {
@@ -30,9 +32,9 @@ struct ContentView: View {
                 
                 VStack(spacing: 10) {
                     
-                    SliderView(value: $redSliderValue, color: .red)
-                    SliderView(value: $greenSliderValue, color: .green)
-                    SliderView(value: $blueSliderValue, color: .blue)
+                    SliderView(sliderValue: $redSliderValue, color: .red)
+                    SliderView(sliderValue: $greenSliderValue, color: .green)
+                    SliderView(sliderValue: $blueSliderValue, color: .blue)
                         .toolbar {
                             ToolbarItem(placement: .keyboard) {
                                 HStack {
@@ -55,27 +57,38 @@ struct ContentView: View {
 }
 
 struct SliderView: View {
-    @Binding var value: Double
+    @Binding var sliderValue: Double
+    @State private var afterValue: Double = 0
+    
+    @State private var editing = false
+    
     let color: Color
         
     var body: some View {
         HStack {
-            Text( lround(value).formatted())
+            Text(lround(sliderValue).formatted())
                 .frame(width: 35, height: 40)
                 .foregroundStyle(.white)
                 .font(.headline)
                 .fontWeight(.heavy)
                 .padding([.trailing, .leading], 5)
             
-            Slider(value: $value, in: 0...255, step: 1)
+            Slider(value: $sliderValue, in: 0...255, step: 1) { _ in
+                afterValue = sliderValue
+            }
                 .tint(color)
                 .padding(.trailing, 10)
             
-            TextField("", value: $value, formatter: NumberFormatter())
+            TextField("", value: editing ? $afterValue : $sliderValue, formatter: NumberFormatter(), onEditingChanged: { isEditing in
+                
+                sliderValue = afterValue
+                editing = isEditing
+            })
                 .frame(width: 50, height: 40)
                 .keyboardType(.numberPad)
                 .foregroundStyle(.black)
                 .textFieldStyle(.roundedBorder)
+                .multilineTextAlignment(.trailing)
                 .padding(.trailing, 15)
         }
     }
