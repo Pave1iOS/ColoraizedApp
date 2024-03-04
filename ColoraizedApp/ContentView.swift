@@ -12,6 +12,8 @@ struct ContentView: View {
     @State private var redSliderValue = Double.random(in: 0...255)
     @State private var greenSliderValue = Double.random(in: 0...255)
     @State private var blueSliderValue = Double.random(in: 0...255)
+    
+    @FocusState private var focusedState: Bool
 
     var body: some View {
         ZStack {
@@ -31,10 +33,23 @@ struct ContentView: View {
                     SliderView(value: $redSliderValue, color: .red)
                     SliderView(value: $greenSliderValue, color: .green)
                     SliderView(value: $blueSliderValue, color: .blue)
-                    
+                        .toolbar {
+                            ToolbarItem(placement: .keyboard) {
+                                HStack {
+                                    Spacer()
+                                    
+                                    Button("Done") {
+                                        applyTextFieldValue()
+                                    }
+                                }
+                            }
+                        }
                 }
+                .focused($focusedState)
                 Spacer()
             }
+        }.onTapGesture {
+            applyTextFieldValue()
         }
     }
 }
@@ -42,7 +57,7 @@ struct ContentView: View {
 struct SliderView: View {
     @Binding var value: Double
     let color: Color
-    
+        
     var body: some View {
         HStack {
             Text( lround(value).formatted())
@@ -58,6 +73,7 @@ struct SliderView: View {
             
             TextField("", value: $value, formatter: NumberFormatter())
                 .frame(width: 50, height: 40)
+                .keyboardType(.numberPad)
                 .foregroundStyle(.black)
                 .textFieldStyle(.roundedBorder)
                 .padding(.trailing, 15)
@@ -83,6 +99,11 @@ struct RectangleView: View {
     }
 }
 
+extension ContentView {
+    func applyTextFieldValue() {
+        focusedState = false // dismiss keyboard
+    }
+}
 
 #Preview {
     ContentView()
