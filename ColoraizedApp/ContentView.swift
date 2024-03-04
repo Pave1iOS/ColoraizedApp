@@ -28,7 +28,7 @@ struct ContentView: View {
                     green: greenSliderValue,
                     blue: blueSliderValue
                 )
-                    .padding(.bottom, 40)
+                .padding([.bottom, .top], 40)
                 
                 VStack(spacing: 10) {
                     
@@ -41,7 +41,7 @@ struct ContentView: View {
                                     Spacer()
                                     
                                     Button("Done") {
-                                        applyTextFieldValue()
+                                        dismissKeyboard()
                                     }
                                 }
                             }
@@ -51,69 +51,13 @@ struct ContentView: View {
                 Spacer()
             }
         }.onTapGesture {
-            applyTextFieldValue()
+            dismissKeyboard()
         }
-    }
-}
-
-struct SliderView: View {
-    @Binding var sliderValue: Double
-    @State private var afterValue: Double = 0
-    
-    @State private var editing = false
-    
-    let color: Color
-        
-    var body: some View {
-        HStack {
-            Text(lround(sliderValue).formatted())
-                .frame(width: 35, height: 40)
-                .foregroundStyle(.white)
-                .font(.headline)
-                .fontWeight(.heavy)
-                .padding([.trailing, .leading], 5)
-            
-            Slider(value: $sliderValue, in: 0...255, step: 1) { _ in
-                afterValue = sliderValue
-            }
-                .tint(color)
-                .padding(.trailing, 10)
-            
-            TextField("", value: editing ? $afterValue : $sliderValue, formatter: NumberFormatter(), onEditingChanged: { isEditing in
-                
-                sliderValue = afterValue
-                editing = isEditing
-            })
-                .frame(width: 50, height: 40)
-                .keyboardType(.numberPad)
-                .foregroundStyle(.black)
-                .textFieldStyle(.roundedBorder)
-                .multilineTextAlignment(.trailing)
-                .padding(.trailing, 15)
-        }
-    }
-}
-
-struct RectangleView: View {
-    let red: Double
-    let green: Double
-    let blue: Double
-    
-    var body: some View {
-        Rectangle()
-            .frame(width: 250, height: 120)
-            .foregroundStyle(
-                Color(red: red/255, green: green/255, blue: blue/255))
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-            .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(lineWidth: 4)
-                    .fill(.white))
     }
 }
 
 extension ContentView {
-    func applyTextFieldValue() {
+    func dismissKeyboard() {
         focusedState = false // dismiss keyboard
     }
 }
