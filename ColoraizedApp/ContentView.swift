@@ -20,7 +20,11 @@ struct ContentView: View {
                 .ignoresSafeArea()
             
             VStack {
-                RectangleView(color: .blue)
+                RectangleView(
+                    red: redSliderValue,
+                    green: greenSliderValue,
+                    blue: blueSliderValue
+                )
                     .padding(.bottom, 40)
                 
                 VStack(spacing: 10) {
@@ -58,12 +62,15 @@ struct SliderView: View {
 }
 
 struct RectangleView: View {
-    let color: Color
+    let red: Double
+    let green: Double
+    let blue: Double
     
     var body: some View {
         Rectangle()
             .frame(width: 250, height: 120)
-            .foregroundStyle(color)
+            .foregroundStyle(
+                Color(red: red/255, green: green/255, blue: blue/255))
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
