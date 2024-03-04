@@ -13,7 +13,6 @@ struct ContentView: View {
     @State private var greenSliderValue = Double.random(in: 0...255)
     @State private var blueSliderValue = Double.random(in: 0...255)
 
-    
     var body: some View {
         ZStack {
             Color(.black)
@@ -55,9 +54,14 @@ struct SliderView: View {
             
             Slider(value: $value, in: 0...255, step: 1)
                 .tint(color)
-                .padding(.trailing, 20)
-        }
+                .padding(.trailing, 10)
             
+            TextField("", value: $value, formatter: NumberFormatter())
+                .frame(width: 50, height: 40)
+                .foregroundStyle(.black)
+                .textFieldStyle(.roundedBorder)
+                .padding(.trailing, 15)
+        }
     }
 }
 
