@@ -43,9 +43,7 @@ struct ContentView: View {
                 HStack {
                     Spacer()
                     
-                    Button("Done") {
-                        dismissKeyboard()
-                    }
+                    Button("Done", action: dismissKeyboard)
                 }
             }
         }
@@ -56,7 +54,7 @@ struct ContentView: View {
 }
 
 // MARK: Dismiss keyboard
-extension ContentView {
+private extension ContentView {
     func dismissKeyboard() {
         focusedState = false
     }

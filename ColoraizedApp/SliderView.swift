@@ -16,6 +16,7 @@ struct SliderView: View {
     @State private var afterValue: Double = 0
     
     @State private var editing = false
+    @State private var isPresented = false
     
     let color: Color
         
@@ -33,10 +34,16 @@ struct SliderView: View {
                 .padding(.trailing, 10)
             
             TextField("", value: editing ? $afterValue : $sliderValue, formatter: NumberFormatter(), onEditingChanged: { isEditing in
-                
                 sliderValue = afterValue
                 editing = isEditing
-            })
+                isValidation()
+            }).alert("Wrong Format!", isPresented: $isPresented) {                Button("OK") {
+                    sliderValue = 50
+                    afterValue = 50
+                }
+            } message: {
+                Text("please enter a valid value from 0 to 255")
+            }
                 .frame(width: 50, height: 40)
                 .keyboardType(.numberPad)
                 .foregroundStyle(.black)
@@ -44,6 +51,15 @@ struct SliderView: View {
                 .multilineTextAlignment(.trailing)
                 .padding(.trailing, 15)
         }
+    }
+}
+
+private extension SliderView {
+    func isValidation() {
+        if !(0...255).contains(sliderValue) {
+            isPresented = true
+        }
+        
     }
 }
 
