@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct SliderView: View {
-    @Binding var sliderValue: Double
+    @Binding var sliderValue: Double {
+        willSet {
+            afterValue = sliderValue
+        }
+    }
     @State private var afterValue: Double = 0
     
     @State private var editing = false
@@ -24,9 +28,7 @@ struct SliderView: View {
                 .fontWeight(.heavy)
                 .padding([.trailing, .leading], 5)
             
-            Slider(value: $sliderValue, in: 0...255, step: 1) { _ in
-                afterValue = sliderValue
-            }
+            Slider(value: $sliderValue, in: 0...255, step: 1)
                 .tint(color)
                 .padding(.trailing, 10)
             
