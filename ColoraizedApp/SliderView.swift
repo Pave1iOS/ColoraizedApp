@@ -38,8 +38,8 @@ struct SliderView: View {
                 editing = isEditing
                 isValidation()
             }).alert("Wrong Format!", isPresented: $isPresented) {                Button("OK") {
-                    sliderValue = 50
-                    afterValue = 50
+                    sliderValue = 100
+                    afterValue = 100
                 }
             } message: {
                 Text("please enter a valid value from 0 to 255")
@@ -59,7 +59,6 @@ private extension SliderView {
         if !(0...255).contains(sliderValue) {
             isPresented = true
         }
-        
     }
 }
 
