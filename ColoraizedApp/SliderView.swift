@@ -54,9 +54,9 @@ struct TextFieldView: View {
         } message: {
             Text("please enter a valid value from 0 to 255")
         }
+        .overlay(RoundedRectangle(cornerRadius: 5).stroke(lineWidth: 1))
             .frame(width: 50, height: 40)
             .keyboardType(.numberPad)
-            .foregroundStyle(.black)
             .textFieldStyle(.roundedBorder)
             .multilineTextAlignment(.trailing)
             .padding(.trailing, 15)
